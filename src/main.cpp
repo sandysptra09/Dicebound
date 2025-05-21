@@ -12,25 +12,27 @@
 
 using namespace std;
 
-int main() {
+int main()
+{
     srand(time(0));
     initializePlayers();
     initializeGraph();
     determineTurnOrder();
     displayBoard();
 
-    while (true) {
+    while (true)
+    {
         playTurn();
         cout << "\nTekan ENTER untuk giliran berikutnya...";
         cin.ignore();
         cin.get();
 
-        #ifdef _WIN32
-            system("cls");
-        #else
-            system("clear");
-        #endif
+#ifdef _WIN32
+        system("cls");
+#else
+        system("clear");
+#endif
     }
 
-    return 0;
+    return 0;
 }
