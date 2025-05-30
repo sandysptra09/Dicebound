@@ -3,6 +3,9 @@
 
 #include <string>
 
+void inputPlayers();
+extern int actualNumPlayers;
+
 struct Player
 {
     std::string name;

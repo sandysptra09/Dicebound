@@ -15,7 +15,7 @@ using namespace std;
 int main()
 {
     srand(time(0));
-    initializePlayers();
+    inputPlayers();
     initializeGraph();
     determineTurnOrder();
     displayBoard();
