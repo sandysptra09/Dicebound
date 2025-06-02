@@ -97,7 +97,7 @@ void ShowMainMenu()
 
 int main()
 {
-        ShowMainMenu(); // Tampilkan welcome screen "Dicebound"
+        ShowMainMenu();
 
         srand(time(0));
 
@@ -118,7 +118,7 @@ int main()
                                 cin >> numPlayers;
                         } while (numPlayers < 1 || numPlayers > MAX_PLAYERS);
 
-                        cin.ignore(); // Buat cin.get() nanti
+                        cin.ignore();
 
                         initializeGraph();
                         initializePlayers();
