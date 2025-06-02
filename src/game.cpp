@@ -14,7 +14,34 @@
 
 using namespace std;
 
-queue<int> turnQueue;
+const int MAX_QUEUE = MAX_PLAYERS;
+int turnQueueArr[MAX_QUEUE];
+int front = -1, rear = -1;
+
+bool isFull() { return (rear + 1) % MAX_QUEUE == front; }
+bool isEmpty() { return front == -1; }
+
+void enqueue(int val) {
+    if (isFull()) return;
+    if (isEmpty()) front = 0;
+    rear = (rear + 1) % MAX_QUEUE;
+    turnQueueArr[rear] = val;
+}
+
+int dequeue() {
+    if (isEmpty()) return -1;
+    int val = turnQueueArr[front];
+    if (front == rear)
+        front = rear = -1;
+    else
+        front = (front + 1) % MAX_QUEUE;
+    return val;
+}
+
+int peek() {
+    if (isEmpty()) return -1;
+    return turnQueueArr[front];
+}
 
 int rollDice() {
     return rand() % 6 + 1;
@@ -23,23 +50,24 @@ int rollDice() {
 void determineTurnOrder() {
     vector<pair<int, int>> rolls;
     cout << "\nMenentukan giliran awal dengan melempar dadu...\n";
-    for (int i = 0; i < NUM_PLAYERS; ++i) {
+    for (int i = 0; i < numPlayers; ++i) {
         int roll = rollDice();
         cout << players[i].name << " roll: " << roll << endl;
         rolls.push_back({roll, i});
     }
     sort(rolls.rbegin(), rolls.rend());
     for (auto& r : rolls) {
-        turnQueue.push(r.second);
+        enqueue(r.second);
     }
+
     cout << "\nUrutan giliran: ";
-    queue<int> temp = turnQueue;
-    while (!temp.empty()) {
-        cout << players[temp.front()].name << " ";
-        temp.pop();
+    for (int i = 0; i < numPlayers; ++i) {
+        cout << players[turnQueueArr[(front + i) % MAX_QUEUE]].name << " ";
     }
+
     cout << endl;
 }
+
 
 bool playMinigame(int playerIndex) {
     cout << players[playerIndex].name << " memasuki minigame!\n";
@@ -52,8 +80,9 @@ bool playMinigame(int playerIndex) {
 }
 
 void playTurn() {
-    int currentPlayerIndex = turnQueue.front();
-    turnQueue.pop();
+    int currentPlayerIndex = dequeue();
+    if (currentPlayerIndex == -1) return;
+
     Player& p = players[currentPlayerIndex];
 
     cout << "\n--- Giliran " << p.name << " ---\n";
@@ -124,5 +153,5 @@ void playTurn() {
         exit(0);
     }
 
-    turnQueue.push(currentPlayerIndex);
+    enqueue(currentPlayerIndex);
 }
