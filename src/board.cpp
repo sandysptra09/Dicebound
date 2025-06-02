@@ -86,14 +86,15 @@ void displayBoard()
         {
             cout << "|";
             string playerMark = " ";
-            for (int i = 0; i < numPlayers; i++) // Diganti dari NUM_PLAYERS
+            for (int i = 0; i < numPlayers; i++)
             {
                 if (players[i].position == cells[c])
                 {
+                    string symbol = string(1, toupper(players[i].name[0])) + to_string(i + 1);
                     if (playerMark == " ")
-                        playerMark = "P" + to_string(i + 1);
+                        playerMark = symbol;
                     else
-                        playerMark += ",P" + to_string(i + 1);
+                        playerMark += "," + symbol;
                 }
             }
             cout.width(cellWidth);
@@ -101,5 +102,6 @@ void displayBoard()
         }
         cout << "|\n";
     }
+
     printBorder();
 }
