@@ -14,25 +14,25 @@ using namespace std;
 
 int main()
 {
-    srand(time(0));
-    inputPlayers();
-    initializeGraph();
-    determineTurnOrder();
-    displayBoard();
+        srand(time(0));
+        inputPlayers();
+        initializeGraph();
+        determineTurnOrder();
+        displayBoard();
 
-    while (true)
-    {
-        playTurn();
-        cout << "\nTekan ENTER untuk giliran berikutnya...";
-        cin.ignore();
-        cin.get();
+        while (true)
+        {
+                playTurn();
+                cout << "\nTekan ENTER untuk giliran berikutnya...";
+                cin.ignore();
+                cin.get();
 
 #ifdef _WIN32
-        system("cls");
+                system("cls");
 #else
-        system("clear");
+                system("clear");
 #endif
-    }
+        }
 
-    return 0;
+        return 0;
 }
