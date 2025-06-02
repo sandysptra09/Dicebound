@@ -96,6 +96,11 @@ void ShowMainMenu()
         system("cls");
 }
 
+void setcolor(unsigned short color) {
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hConsole, color);
+}
+
 int main()
 {
         ShowMainMenu();
@@ -104,7 +109,8 @@ int main()
 
         int choice;
         do
-        {
+        {       
+                setcolor(12);
                 cout << "=== ULAR TANGGA GRAPH ===\n";
                 cout << "1. Play\n";
                 cout << "2. Exit\n";

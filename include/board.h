@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include "player.h"
+#include <windows.h>
 
 const int NUM_VERTICES = 50;
 const int MAX_PLAYERS = 4;
@@ -18,6 +19,7 @@ extern std::vector<Edge> graph[NUM_VERTICES + 1];
 extern Player players[MAX_PLAYERS];
 extern int numPlayers;
 
+void setcolor(unsigned short color);
 void initializeGraph();
 void initializePlayers();
 void displayBoard();
