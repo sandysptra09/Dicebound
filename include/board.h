@@ -6,7 +6,7 @@
 #include "player.h"
 
 const int NUM_VERTICES = 50;
-const int NUM_PLAYERS = 4;
+const int MAX_PLAYERS = 4;
 
 struct Edge
 {
@@ -15,7 +15,8 @@ struct Edge
 };
 
 extern std::vector<Edge> graph[NUM_VERTICES + 1];
-extern Player players[NUM_PLAYERS];
+extern Player players[MAX_PLAYERS];
+extern int numPlayers;
 
 void initializeGraph();
 void initializePlayers();

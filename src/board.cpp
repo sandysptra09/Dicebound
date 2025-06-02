@@ -6,15 +6,15 @@
 using namespace std;
 
 std::vector<Edge> graph[NUM_VERTICES + 1];
-Player players[NUM_PLAYERS];
+Player players[MAX_PLAYERS];
+int numPlayers = 0;
 
-void initializeGraph()
-{
-    for (int i = 1; i < NUM_VERTICES; ++i)
-    {
+void initializeGraph() {
+    for (int i = 1; i < NUM_VERTICES; ++i) {
         if (i + 1 <= NUM_VERTICES)
             graph[i].push_back({i + 1, 1});
     }
+
     graph[3].push_back({13, 5});
     graph[8].push_back({17, 6});
     graph[20].push_back({29, 5});
@@ -26,14 +26,13 @@ void initializeGraph()
     graph[49].push_back({34, 7});
 }
 
-void initializePlayers()
-{
-    for (int i = 0; i < NUM_PLAYERS; ++i)
-    {
+void initializePlayers() {
+    for (int i = 0; i < numPlayers; ++i) {
         players[i].name = "Player " + to_string(i + 1);
         players[i].position = 1;
     }
 }
+
 
 void displayBoard()
 {
@@ -71,6 +70,7 @@ void displayBoard()
 
         printBorder();
 
+        // Baris angka sel
         for (int c = 0; c < cols; c++)
         {
             cout << "|";
@@ -79,11 +79,12 @@ void displayBoard()
         }
         cout << "|\n";
 
+        // Baris pemain di setiap sel
         for (int c = 0; c < cols; c++)
         {
             cout << "|";
             string playerMark = " ";
-            for (int i = 0; i < NUM_PLAYERS; i++)
+            for (int i = 0; i < numPlayers; i++)  // Diganti dari NUM_PLAYERS
             {
                 if (players[i].position == cells[c])
                 {
