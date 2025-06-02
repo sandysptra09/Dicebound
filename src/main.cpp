@@ -3,6 +3,7 @@
 #include <ctime>
 #include "board.h"
 #include "game.h"
+#include "player.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -118,10 +119,12 @@ int main()
                                 cin >> numPlayers;
                         } while (numPlayers < 1 || numPlayers > MAX_PLAYERS);
 
-                        cin.ignore();
+                        cin.ignore(); // Bersihkan newline dari buffer
+
+                        inputPlayers(); // <-- Input nama pemain
 
                         initializeGraph();
-                        initializePlayers();
+                        initializePlayers(); // Inisialisasi posisi awal pemain
                         determineTurnOrder();
                         displayBoard();
 
