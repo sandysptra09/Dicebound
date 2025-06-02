@@ -58,6 +58,7 @@ int rollDice()
 void determineTurnOrder()
 {
     vector<pair<int, int>> rolls;
+    setcolor(12);
     cout << "\nMenentukan giliran awal dengan melempar dadu...\n";
     for (int i = 0; i < numPlayers; ++i)
     {
