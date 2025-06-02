@@ -9,8 +9,10 @@ std::vector<Edge> graph[NUM_VERTICES + 1];
 Player players[MAX_PLAYERS];
 int numPlayers = 0;
 
-void initializeGraph() {
-    for (int i = 1; i < NUM_VERTICES; ++i) {
+void initializeGraph()
+{
+    for (int i = 1; i < NUM_VERTICES; ++i)
+    {
         if (i + 1 <= NUM_VERTICES)
             graph[i].push_back({i + 1, 1});
     }
@@ -26,13 +28,13 @@ void initializeGraph() {
     graph[49].push_back({34, 7});
 }
 
-void initializePlayers() {
-    for (int i = 0; i < numPlayers; ++i) {
-        players[i].name = "Player " + to_string(i + 1);
+void initializePlayers()
+{
+    for (int i = 0; i < numPlayers; ++i)
+    {
         players[i].position = 1;
     }
 }
-
 
 void displayBoard()
 {
@@ -84,7 +86,7 @@ void displayBoard()
         {
             cout << "|";
             string playerMark = " ";
-            for (int i = 0; i < numPlayers; i++)  // Diganti dari NUM_PLAYERS
+            for (int i = 0; i < numPlayers; i++) // Diganti dari NUM_PLAYERS
             {
                 if (players[i].position == cells[c])
                 {
