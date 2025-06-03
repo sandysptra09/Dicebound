@@ -21,20 +21,17 @@ void ShowMainMenu()
         HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 #endif
 
-        const string title1 = " _______   __    ______  _______ .______     ______    __    __  .__   __.  _______  ";
-        const string title2 = "|       \\ |  |  /      ||   ____||   _  \\   /  __  \\  |  |  |  | |  \\ |  | |       \\ ";
-        const string title3 = "|  .--.  ||  | |  ,----'|  |__   |  |_)  | |  |  |  | |  |  |  | |   \\|  | |  .--.  |";
-        const string title4 = "|  |  |  ||  | |  |     |   __|  |   _  <  |  |  |  | |  |  |  | |  . `  | |  |  |  |";
-        const string title5 = "|  '--'  ||  | |  `----.|  |____ |  |_)  | |  `--'  | |  `--'  | |  |\\   | |  '--'  |";
-        const string title6 = "|_______/ |__|  \\______||_______||______/   \\______/   \\______/  |__| \\__| |_______/ ";
-        const string title7 = "                                                                                     ";
-
         const string titles[] = {
-            title1, title2, title3, title4, title5, title6, title7};
+            " _______   __    ______  _______ .______     ______    __    __  .__   __.  _______  ",
+            "|       \\ |  |  /      ||   ____||   _  \\   /  __  \\  |  |  |  | |  \\ |  | |       \\ ",
+            "|  .--.  ||  | |  ,----'|  |__   |  |_)  | |  |  |  | |  |  |  | |   \\|  | |  .--.  |",
+            "|  |  |  ||  | |  |     |   __|  |   _  <  |  |  |  | |  |  |  | |  . `  | |  |  |  |",
+            "|  '--'  ||  | |  `----.|  |____ |  |_)  | |  `--'  | |  `--'  | |  |\\   | |  '--'  |",
+            "|_______/ |__|  \\______||_______||______/   \\______/   \\______/  |__| \\__| |_______/ ",
+            "                                                                                     "};
 
         const int paddingLeft = 5;
         const int centerOffset = paddingLeft + 25;
-
         int blinkCounter = 0;
 
         while (
@@ -53,9 +50,7 @@ void ShowMainMenu()
 #endif
 
                 for (const auto &line : titles)
-                {
                         cout << string(paddingLeft, ' ') << line << endl;
-                }
 
 #ifdef _WIN32
                 SetConsoleTextAttribute(hConsole, 7);
@@ -96,20 +91,64 @@ void ShowMainMenu()
         system("cls");
 }
 
-void setcolor(unsigned short color) {
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(hConsole, color);
+void setcolor(unsigned short color)
+{
+#ifdef _WIN32
+        HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+        SetConsoleTextAttribute(hConsole, color);
+#endif
+}
+
+void showRulesAndTips()
+{
+#ifdef _WIN32
+        HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+#endif
+
+        cout << "\n";
+        cout << "╔══════════════════════════════════════════╗\n";
+
+#ifdef _WIN32
+        SetConsoleTextAttribute(hConsole, 14); // Kuning
+#endif
+        cout << "║            📜 PERATURAN & TIPS           ║\n";
+
+#ifdef _WIN32
+        SetConsoleTextAttribute(hConsole, 7); // Normal
+#endif
+        cout << "╚══════════════════════════════════════════╝\n";
+
+        cout << "🎯 Tujuan:\n";
+        cout << "   Capai kotak terakhir lebih dulu!\n\n";
+
+        cout << "🎲 Cara Main:\n";
+        cout << "   - Setiap giliran, lempar dadu dan maju sesuai angka.\n";
+        cout << "   - 🐍 Kena ular? Kamu akan turun!\n";
+        cout << "   - 🪜 Kena tangga? Kamu naik lebih cepat!\n\n";
+
+        cout << "👥 Pemain pertama ditentukan secara acak.\n";
+        cout << "🎉 Selamat bermain dan semoga beruntung!\n";
+
+        cout << "\n";
+#ifdef _WIN32
+        SetConsoleTextAttribute(hConsole, 11); // Biru muda
+#endif
+        cout << "Tekan ENTER untuk melanjutkan...";
+#ifdef _WIN32
+        SetConsoleTextAttribute(hConsole, 7);
+#endif
+
+        cin.ignore();
 }
 
 int main()
 {
         ShowMainMenu();
-
         srand(time(0));
 
         int choice;
         do
-        {       
+        {
                 setcolor(12);
                 cout << "=== ULAR TANGGA GRAPH ===\n";
                 cout << "1. Play\n";
@@ -119,6 +158,17 @@ int main()
 
                 if (choice == 1)
                 {
+                        char lihatRules;
+                        cin.ignore(); // Buang newline sisa input sebelumnya
+                        cout << "Mau lihat peraturan & tips dulu? (y/n): ";
+                        cin >> lihatRules;
+                        cin.ignore();
+
+                        if (lihatRules == 'y' || lihatRules == 'Y')
+                        {
+                                showRulesAndTips();
+                        }
+
                         do
                         {
                                 cout << "Masukkan jumlah pemain (1-4): ";
@@ -127,10 +177,9 @@ int main()
 
                         cin.ignore(); // Bersihkan newline dari buffer
 
-                        inputPlayers(); // <-- Input nama pemain
-
+                        inputPlayers();
                         initializeGraph();
-                        initializePlayers(); // Inisialisasi posisi awal pemain
+                        initializePlayers();
                         determineTurnOrder();
                         displayBoard();
 
