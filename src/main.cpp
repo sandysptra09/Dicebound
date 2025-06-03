@@ -109,12 +109,12 @@ void showRulesAndTips()
         cout << "╔══════════════════════════════════════════╗\n";
 
 #ifdef _WIN32
-        SetConsoleTextAttribute(hConsole, 14); // Kuning
+        SetConsoleTextAttribute(hConsole, 14);
 #endif
         cout << "║            📜 PERATURAN & TIPS           ║\n";
 
 #ifdef _WIN32
-        SetConsoleTextAttribute(hConsole, 7); // Normal
+        SetConsoleTextAttribute(hConsole, 7);
 #endif
         cout << "╚══════════════════════════════════════════╝\n";
 
@@ -131,7 +131,7 @@ void showRulesAndTips()
 
         cout << "\n";
 #ifdef _WIN32
-        SetConsoleTextAttribute(hConsole, 11); // Biru muda
+        SetConsoleTextAttribute(hConsole, 11);
 #endif
         cout << "Tekan ENTER untuk melanjutkan...";
 #ifdef _WIN32
@@ -149,33 +149,94 @@ int main()
         int choice;
         do
         {
-                setcolor(12);
-                cout << "=== ULAR TANGGA GRAPH ===\n";
-                cout << "1. Play\n";
-                cout << "2. Exit\n";
-                cout << "Pilih: ";
-                cin >> choice;
+#ifdef _WIN32
+                HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+                SetConsoleTextAttribute(hConsole, 13);
+#endif
+                cout << "\n╔════════════════════════════════╗\n";
+                cout << "║        🎮 MAIN MENU            ║\n";
+                cout << "╠════════════════════════════════╣\n";
+#ifdef _WIN32
+                SetConsoleTextAttribute(hConsole, 11);
+#endif
+                cout << "║ 1. ▶️  Play                     ║\n";
+                cout << "║ 2. ❌ Exit                     ║\n";
+                cout << "╚════════════════════════════════╝\n";
+
+#ifdef _WIN32
+                SetConsoleTextAttribute(hConsole, 14);
+#endif
+
+                while (true)
+                {
+                        cout << "Pilih opsi (1/2): ";
+                        if (cin >> choice && (choice == 1 || choice == 2))
+                        {
+                                break;
+                        }
+                        else
+                        {
+#ifdef _WIN32
+                                SetConsoleTextAttribute(hConsole, 12);
+#endif
+                                cout << "❗ Input tidak valid. Masukkan angka 1 atau 2.\n\n";
+                                cin.clear();
+                                cin.ignore(1000, '\n');
+                        }
+                }
 
                 if (choice == 1)
                 {
                         char lihatRules;
-                        cin.ignore(); // Buang newline sisa input sebelumnya
-                        cout << "Mau lihat peraturan & tips dulu? (y/n): ";
-                        cin >> lihatRules;
+
+                        while (true)
+                        {
+#ifdef _WIN32
+                                SetConsoleTextAttribute(hConsole, 10);
+#endif
+                                cout << "\nMau lihat peraturan & tips dulu? (y/n): ";
+#ifdef _WIN32
+                                SetConsoleTextAttribute(hConsole, 7);
+#endif
+                                if (cin >> lihatRules)
+                                {
+                                        lihatRules = tolower(lihatRules);
+                                        if (lihatRules == 'y' || lihatRules == 'n')
+                                                break;
+                                }
+#ifdef _WIN32
+                                SetConsoleTextAttribute(hConsole, 12);
+#endif
+                                cout << "❗ Masukkan hanya 'y' atau 'n'.\n";
+                                cin.clear();
+                                cin.ignore(1000, '\n');
+                        }
+
                         cin.ignore();
 
-                        if (lihatRules == 'y' || lihatRules == 'Y')
+                        if (lihatRules == 'y')
                         {
                                 showRulesAndTips();
                         }
 
                         do
                         {
-                                cout << "Masukkan jumlah pemain (1-4): ";
-                                cin >> numPlayers;
+#ifdef _WIN32
+                                SetConsoleTextAttribute(hConsole, 11);
+#endif
+                                cout << "\nMasukkan jumlah pemain (2-4): ";
+                                if (!(cin >> numPlayers) || numPlayers < 2 || numPlayers > MAX_PLAYERS)
+                                {
+#ifdef _WIN32
+                                        SetConsoleTextAttribute(hConsole, 12);
+#endif
+                                        cout << "❗ Jumlah pemain harus antara 2 sampai 4.\n";
+                                        cin.clear();
+                                        cin.ignore(1000, '\n');
+                                }
                         } while (numPlayers < 1 || numPlayers > MAX_PLAYERS);
 
-                        cin.ignore(); // Bersihkan newline dari buffer
+                        cin.ignore();
 
                         inputPlayers();
                         initializeGraph();
@@ -197,11 +258,10 @@ int main()
                 }
                 else if (choice == 2)
                 {
-                        cout << "Keluar dari game.\n";
-                }
-                else
-                {
-                        cout << "Pilihan tidak valid.\n";
+#ifdef _WIN32
+                        SetConsoleTextAttribute(hConsole, 12);
+#endif
+                        cout << "\nKeluar dari game. Sampai jumpa!\n";
                 }
         } while (choice != 2);
 
