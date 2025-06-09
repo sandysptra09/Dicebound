@@ -1,7 +1,6 @@
 #include "game.h"
 #include "board.h"
 #include <iostream>
-#include <queue>
 #include <algorithm>
 #include <cstdlib>
 #include <ctime>
@@ -14,40 +13,75 @@
 
 using namespace std;
 
-const int MAX_QUEUE = MAX_PLAYERS;
-int turnQueueArr[MAX_QUEUE];
-int front = -1, rear = -1;
+Queue turnQueue;
 
-bool isFull() { return (rear + 1) % MAX_QUEUE == front; }
-bool isEmpty() { return front == -1; }
+void createQueue()
+{
+    turnQueue.front = 0;
+    turnQueue.rear = -1;
+    turnQueue.top = 0;
+}
 
-void enqueue(int val)
+bool isEmpty()
+{
+    return turnQueue.top == 0;
+}
+
+bool isFull()
+{
+    return turnQueue.top >= MAX_QUEUE;
+}
+
+void inQueue(int val)
 {
     if (isFull())
         return;
-    if (isEmpty())
-        front = 0;
-    rear = (rear + 1) % MAX_QUEUE;
-    turnQueueArr[rear] = val;
+    turnQueue.rear++;
+    turnQueue.data[turnQueue.rear] = val;
+    turnQueue.top++;
 }
 
-int dequeue()
+int deQueue()
 {
     if (isEmpty())
         return -1;
-    int val = turnQueueArr[front];
-    if (front == rear)
-        front = rear = -1;
-    else
-        front = (front + 1) % MAX_QUEUE;
+    int val = turnQueue.data[0];
+    for (int i = 0; i < turnQueue.rear; ++i)
+    {
+        turnQueue.data[i] = turnQueue.data[i + 1];
+    }
+    turnQueue.rear--;
+    turnQueue.top--;
     return val;
 }
 
-int peek()
+void displayQueue()
+{
+    if (isEmpty())
+    {
+        cout << "Antrian kosong.\n";
+    }
+    else
+    {
+        cout << "Urutan giliran: ";
+        for (int i = 0; i <= turnQueue.rear; ++i)
+        {
+            cout << players[turnQueue.data[i]].name << " ";
+        }
+        cout << endl;
+    }
+}
+
+int find(int val)
 {
     if (isEmpty())
         return -1;
-    return turnQueueArr[front];
+    for (int i = 0; i <= turnQueue.rear; ++i)
+    {
+        if (turnQueue.data[i] == val)
+            return i;
+    }
+    return -1;
 }
 
 int rollDice()
@@ -57,6 +91,7 @@ int rollDice()
 
 void determineTurnOrder()
 {
+    createQueue();
     vector<pair<int, int>> rolls;
     setcolor(12);
     cout << "\nMenentukan giliran awal dengan melempar dadu...\n";
@@ -69,16 +104,10 @@ void determineTurnOrder()
     sort(rolls.rbegin(), rolls.rend());
     for (auto &r : rolls)
     {
-        enqueue(r.second);
+        inQueue(r.second);
     }
 
-    cout << "\nUrutan giliran: ";
-    for (int i = 0; i < numPlayers; ++i)
-    {
-        cout << players[turnQueueArr[(front + i) % MAX_QUEUE]].name << " ";
-    }
-
-    cout << endl;
+    displayQueue();
 }
 
 bool playMinigame(int playerIndex)
@@ -94,7 +123,7 @@ bool playMinigame(int playerIndex)
 
 void playTurn()
 {
-    int currentPlayerIndex = dequeue();
+    int currentPlayerIndex = deQueue();
     if (currentPlayerIndex == -1)
         return;
 
@@ -109,21 +138,16 @@ void playTurn()
     cout << p.name << " roll dadu: " << dice << endl;
 
     int stepsLeft = dice;
-    while (stepsLeft > 0)
+    while (stepsLeft-- > 0)
     {
-        bool moved = false;
         for (auto &edge : graph[p.position])
         {
             if (edge.weight == 1)
             {
                 p.position = edge.to;
-                moved = true;
                 break;
             }
         }
-        if (!moved)
-            break;
-        stepsLeft--;
     }
 
     cout << p.name << " sekarang di petak " << p.position << endl;
@@ -187,5 +211,5 @@ void playTurn()
         exit(0);
     }
 
-    enqueue(currentPlayerIndex);
+    inQueue(currentPlayerIndex);
 }
