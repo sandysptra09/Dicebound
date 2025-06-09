@@ -104,47 +104,43 @@ void Skor() {
   cout << "SKOR COMPUTER : " << skorC << endl;
 }
 
-void playSuitGame() {
-    string pilih;
+
+bool playSuit(std::string playerName) {
+    system("cls");
+    std::cout << playerName << " bermain Suit Game melawan komputer!\n";
+
+    acak();  // set nilai random untuk komputer
+
+    std::string pilih;
     int user;
 
-    do {
-        system("cls");
-        acak();
+    std::cout << "1. BATU\n";
+    std::cout << "2. GUNTING\n";
+    std::cout << "3. KERTAS\n";
+    std::cout << "Pilih: ";
+    std::cin >> pilih;
+    std::cout << "\n";
 
-        cout << "*nb: 'STOP' to stop program\n\n";
-        cout << "1. BATU\n";
-        cout << "2. GUNTING\n";
-        cout << "3. KERTAS\n";
-        cout << "Pilih\t: ";
-        cin >> pilih;
-        cout << "\n";
+    int computer = setAngka;
+    std::stringstream ss;
+    ss << pilih;
+    ss >> user;
 
-        int computer = setAngka;
-        stringstream ss;
-        ss << pilih;
-        ss >> user;
+    tampil(computer, user);
 
-        if (computer == user) {
-            tampil(computer, user);
-            gotoxy(0, 15);
-            cout << "                  SERI";
-            Skor();
-        } else if ((computer == 1 && user == 3) || (computer == 2 && user == 1) || (computer == 3 && user == 2)) {
-            tampil(computer, user);
-            skorU += 1;
-            gotoxy(0, 15);
-            cout << "               KAMU MENANG";
-            Skor();
-        } else if ((computer == 1 && user == 2) || (computer == 2 && user == 3) || (computer == 3 && user == 1)) {
-            tampil(computer, user);
-            skorC += 1;
-            gotoxy(0, 15);
-            cout << "             KOMPUTER MENANG";
-            Skor();
-        }
-
-        getch();
-    } while (pilih != "STOP" && pilih != "stop");
-    getch();
+    gotoxy(0, 15);
+    if (computer == user) {
+        std::cout << "                SERI\n";
+        return false;  // Seri, tidak menang
+    } else if ((computer == 1 && user == 3) ||
+               (computer == 2 && user == 1) ||
+               (computer == 3 && user == 2)) {
+        std::cout << "              KAMU MENANG\n";
+        return true;  // Menang
+    } else {
+        std::cout << "            KOMPUTER MENANG\n";
+        return false;  // Kalah
+    }
 }
+
+
