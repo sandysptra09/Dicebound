@@ -6,6 +6,8 @@
 #include <ctime>
 #include <vector>
 #include "suit.h"
+#include "blackjack.h"
+
 
 #ifdef _WIN32
 #include <windows.h>
@@ -291,8 +293,8 @@ void playTurn()
         
         if (minigameType == 0)
         {
-            cout << "🎯 Minigame: Tebak Angka!\n";
-            win = playMinigame(currentPlayerIndex);
+            cout << "🃏 Minigame: Blackjack!\n";
+            win = playBlackjack(players[currentPlayerIndex].name);
         }
         else
         {
