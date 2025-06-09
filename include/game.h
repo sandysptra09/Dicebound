@@ -12,7 +12,7 @@ struct Queue
 };
 
 extern Queue turnQueue;
-
+extern bool gameEnded;
 void createQueue();
 bool isEmpty();
 bool isFull();
