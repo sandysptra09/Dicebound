@@ -16,4 +16,7 @@ void acak();
 void Skor();
 void playSuitGame();  // This is the game function you'll call from main
 
+bool playSuit(std::string playerName);  // Add this to the bottom
+
+
 #endif // SUIT_H
