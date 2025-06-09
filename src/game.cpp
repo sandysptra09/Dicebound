@@ -242,6 +242,14 @@ void playTurn()
     int dice = rollDiceAnimated();
     cout << p.name << " bergerak " << dice << " langkah!\n";
 
+    if (p.position + dice > 50) {
+    cout << "⚠️ Langkah melebihi petak 50! Harus tepat 50 untuk menang.\n";
+    cout << "Giliran " << p.name << " ditunda ke ronde berikutnya.\n";
+    inQueue(currentPlayerIndex);
+    gameDelay(1000);
+    return;
+    }
+    
     // Animasi pergerakan
     cout << "🚶 Bergerak";
     int stepsLeft = dice;
@@ -320,7 +328,7 @@ void playTurn()
         }
         else
         {
-            cout << "😔 " << p.name << " kalah minigame! Mundur 3 petak.\n";
+            cout << "😔 " << p.name << " kalah minigame! Kamu tidak bergerak kemanapun.\n";
             for (int i = 0; i < 3; ++i)
             {
                 for (auto &edge : graph[p.position])
@@ -354,7 +362,7 @@ void playTurn()
     // }
 
 
-if (p.position >= 50)
+if (p.position == 50)
 {
     const string asciiWin[] = {
     "  __  __ ______ _   _          _   _  _____ ",
