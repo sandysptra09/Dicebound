@@ -4,6 +4,7 @@
 #include "board.h"
 #include "game.h"
 #include "player.h"
+#include "suit.h"
 
 #ifdef _WIN32
 #include <windows.h>

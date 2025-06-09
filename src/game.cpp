@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <cstdlib>
 #include <ctime>
+#include "suit.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -167,9 +168,22 @@ void playTurn()
         }
     }
 
-    if (p.position % 5 == 0 && p.position < 50)
+        if (p.position % 5 == 0 && p.position < 50)
     {
-        bool win = playMinigame(currentPlayerIndex);
+        bool win;
+        int minigameType = rand() % 2; // 0 = tebak angka, 1 = suit
+
+        if (minigameType == 0)
+        {
+            cout << "🎮 Minigame: Tebak Angka!\n";
+            win = playMinigame(currentPlayerIndex);
+        }
+        else
+        {
+            cout << "🎮 Minigame: Suit Batu-Gunting-Kertas!\n";
+            win = playSuit(players[currentPlayerIndex].name);
+        }
+
         if (win)
         {
             cout << p.name << " menang minigame! Maju 3 petak.\n";
@@ -200,8 +214,14 @@ void playTurn()
                 }
             }
         }
+
         cout << p.name << " sekarang di petak " << p.position << endl;
+        // Delay supaya pemain bisa lihat hasil
+        cout << "Tekan ENTER untuk lanjut ke pemain berikutnya...";
+        cin.ignore(); // penting untuk hapus newline dari input sebelumnya
+        cin.get();    // tunggu ENTER
     }
+
 
     displayBoard();
 
