@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <cstdlib>
 #include <ctime>
+#include <vector>
 #include "suit.h"
 
 #ifdef _WIN32
@@ -16,6 +17,66 @@ using namespace std;
 
 Queue turnQueue;
 
+// Fungsi untuk delay/sleep lintas platform
+void gameDelay(int milliseconds) {
+#ifdef _WIN32
+    Sleep(milliseconds);
+#else
+    usleep(milliseconds * 1000);
+#endif
+}
+
+// ASCII art untuk dadu
+void drawDice(int value) {
+    cout << "\n";
+    switch(value) {
+        case 1:
+            cout << "┌─────────┐\n";
+            cout << "│         │\n";
+            cout << "│    ●    │\n";
+            cout << "│         │\n";
+            cout << "└─────────┘\n";
+            break;
+        case 2:
+            cout << "┌─────────┐\n";
+            cout << "│  ●      │\n";
+            cout << "│         │\n";
+            cout << "│      ●  │\n";
+            cout << "└─────────┘\n";
+            break;
+        case 3:
+            cout << "┌─────────┐\n";
+            cout << "│  ●      │\n";
+            cout << "│    ●    │\n";
+            cout << "│      ●  │\n";
+            cout << "└─────────┘\n";
+            break;
+        case 4:
+            cout << "┌─────────┐\n";
+            cout << "│  ●   ●  │\n";
+            cout << "│         │\n";
+            cout << "│  ●   ●  │\n";
+            cout << "└─────────┘\n";
+            break;
+        case 5:
+            cout << "┌─────────┐\n";
+            cout << "│  ●   ●  │\n";
+            cout << "│    ●    │\n";
+            cout << "│  ●   ●  │\n";
+            cout << "└─────────┘\n";
+            break;
+        case 6:
+            cout << "┌─────────┐\n";
+            cout << "│  ●   ●  │\n";
+            cout << "│  ●   ●  │\n";
+            cout << "│  ●   ●  │\n";
+            cout << "└─────────┘\n";
+            break;
+    }
+    cout << "\n";
+}
+
+// Fungsi queue - implementasi yang sudah ada
 void createQueue()
 {
     turnQueue.front = 0;
@@ -85,9 +146,36 @@ int find(int val)
     return -1;
 }
 
+// Fungsi roll dadu dengan animasi
+int rollDiceAnimated() {
+    cout << "\n🎲 Melempar dadu...\n";
+    
+    // Animasi rolling (menampilkan angka acak beberapa kali)
+    for(int i = 0; i < 8; i++) {
+        int randomShow = rand() % 6 + 1;
+        
+        // Clear previous line and show dice
+        cout << "\r🎲 Rolling... " << randomShow << "  ";
+        cout.flush();
+        
+        gameDelay(200 + i * 50); // Delay bertambah untuk efek melambat
+    }
+    
+    // Hasil akhir
+    int finalResult = rand() % 6 + 1;
+    cout << "\r🎉 HASIL DADU! 🎉         \n";
+    drawDice(finalResult);
+    cout << "Nilai: " << finalResult << "\n";
+    
+    gameDelay(1000); // Pause sebentar untuk melihat hasil
+    
+    return finalResult;
+}
+
+// Update fungsi rollDice dengan animasi
 int rollDice()
 {
-    return rand() % 6 + 1;
+    return rollDiceAnimated();
 }
 
 void determineTurnOrder()
@@ -95,25 +183,36 @@ void determineTurnOrder()
     createQueue();
     vector<pair<int, int>> rolls;
     setcolor(12);
-    cout << "\nMenentukan giliran awal dengan melempar dadu...\n";
+    cout << "\n=== MENENTUKAN GILIRAN AWAL ===\n";
+    cout << "Setiap pemain akan melempar dadu!\n\n";
+    
     for (int i = 0; i < numPlayers; ++i)
     {
-        int roll = rollDice();
-        cout << players[i].name << " roll: " << roll << endl;
+        cout << "🎯 Giliran " << players[i].name << "!\n";
+        cout << "Tekan ENTER untuk melempar dadu...";
+        cin.get();
+        
+        int roll = rollDiceAnimated();
+        cout << players[i].name << " mendapat: " << roll << "\n";
+        cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+        
         rolls.push_back({roll, i});
+        gameDelay(500);
     }
+    
     sort(rolls.rbegin(), rolls.rend());
     for (auto &r : rolls)
     {
         inQueue(r.second);
     }
 
+    cout << "\n🏆 URUTAN GILIRAN DITENTUKAN! 🏆\n";
     displayQueue();
 }
 
 bool playMinigame(int playerIndex)
 {
-    cout << players[playerIndex].name << " memasuki minigame!\n";
+    cout << players[playerIndex].name << " memasuki minigame tebak angka!\n";
     cout << "Tebak angka antara 1 sampai 3 (input manual): ";
     int correct = rand() % 3 + 1;
     int guess;
@@ -130,17 +229,25 @@ void playTurn()
 
     Player &p = players[currentPlayerIndex];
 
-    cout << "\n--- Giliran " << p.name << " ---\n";
+    cout << "\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+    cout << "👤 GILIRAN " << p.name << " 👤\n";
+    cout << "Posisi saat ini: Petak " << p.position << "\n";
+    cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
     cout << "Tekan ENTER untuk melempar dadu...";
-    cin.ignore();
     cin.get();
 
-    int dice = rollDice();
-    cout << p.name << " roll dadu: " << dice << endl;
+    int dice = rollDiceAnimated();
+    cout << p.name << " bergerak " << dice << " langkah!\n";
 
+    // Animasi pergerakan
+    cout << "🚶 Bergerak";
     int stepsLeft = dice;
     while (stepsLeft-- > 0)
     {
+        cout << ".";
+        cout.flush();
+        gameDelay(400);
+        
         for (auto &edge : graph[p.position])
         {
             if (edge.weight == 1)
@@ -150,43 +257,52 @@ void playTurn()
             }
         }
     }
+    cout << "\n";
 
-    cout << p.name << " sekarang di petak " << p.position << endl;
+    cout << "📍 " << p.name << " sekarang di petak " << p.position << endl;
 
+    // Cek ular/tangga dengan animasi
     for (auto &edge : graph[p.position])
     {
         if (edge.weight != 1)
         {
-            cout << p.name << " terkena ";
+            cout << "\n";
             if (edge.to > p.position)
-                cout << "TANGGA!";
+            {
+                cout << "🪜 TANGGA! " << p.name << " naik ke petak " << edge.to << "! 🎉\n";
+            }
             else
-                cout << "ULAR!";
-            cout << " Lompat ke petak " << edge.to << endl;
+            {
+                cout << "🐍 ULAR! " << p.name << " turun ke petak " << edge.to << "! 😱\n";
+            }
             p.position = edge.to;
+            gameDelay(1000);
             break;
         }
     }
 
-        if (p.position % 5 == 0 && p.position < 50)
+    // Minigame logic yang sudah ada (dengan 2 jenis minigame)
+    if (p.position % 5 == 0 && p.position < 50)
     {
         bool win;
         int minigameType = rand() % 2; // 0 = tebak angka, 1 = suit
 
+        cout << "\n🎮 MINIGAME ZONE! 🎮\n";
+        
         if (minigameType == 0)
         {
-            cout << "🎮 Minigame: Tebak Angka!\n";
+            cout << "🎯 Minigame: Tebak Angka!\n";
             win = playMinigame(currentPlayerIndex);
         }
         else
         {
-            cout << "🎮 Minigame: Suit Batu-Gunting-Kertas!\n";
+            cout << "✂️ Minigame: Suit Batu-Gunting-Kertas!\n";
             win = playSuit(players[currentPlayerIndex].name);
         }
 
         if (win)
         {
-            cout << p.name << " menang minigame! Maju 3 petak.\n";
+            cout << "🎉 " << p.name << " menang minigame! Maju 3 petak.\n";
             for (int i = 0; i < 3; ++i)
             {
                 for (auto &edge : graph[p.position])
@@ -201,7 +317,7 @@ void playTurn()
         }
         else
         {
-            cout << p.name << " kalah minigame! Mundur 3 petak.\n";
+            cout << "😔 " << p.name << " kalah minigame! Mundur 3 petak.\n";
             for (int i = 0; i < 3; ++i)
             {
                 for (auto &edge : graph[p.position])
@@ -215,19 +331,19 @@ void playTurn()
             }
         }
 
-        cout << p.name << " sekarang di petak " << p.position << endl;
+        cout << "📍 " << p.name << " sekarang di petak " << p.position << endl;
         // Delay supaya pemain bisa lihat hasil
         cout << "Tekan ENTER untuk lanjut ke pemain berikutnya...";
-        cin.ignore(); // penting untuk hapus newline dari input sebelumnya
         cin.get();    // tunggu ENTER
     }
-
 
     displayBoard();
 
     if (p.position >= 50)
     {
-        cout << "\n🎉 " << p.name << " MENANG! 🎉\n";
+        cout << "\n🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊\n";
+        cout << "🏆 " << p.name << " MENANG! 🏆\n";
+        cout << "🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊\n";
         exit(0);
     }
 

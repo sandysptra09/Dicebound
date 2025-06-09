@@ -24,6 +24,6 @@ int find(int val);
 void determineTurnOrder();
 bool playMinigame(int playerIndex);
 void playTurn();
-int rollDice();
+int rollDiceAnimated();
 
 #endif
