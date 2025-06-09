@@ -14,9 +14,8 @@ void kertas(int nilai);
 void tampil(int computer, int user);
 void acak();
 void Skor();
-void playSuitGame();  // This is the game function you'll call from main
+void playSuitGame(); // This is the game function you'll call from main
 
-bool playSuit(std::string playerName);  // Add this to the bottom
-
+bool playSuit(std::string playerName); // Add this to the bottom
 
 #endif // SUIT_H

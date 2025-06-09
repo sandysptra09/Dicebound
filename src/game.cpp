@@ -17,8 +17,9 @@ using namespace std;
 
 Queue turnQueue;
 
-// Fungsi untuk delay/sleep lintas platform
-void gameDelay(int milliseconds) {
+// fungsi untuk delay/sleep lintas platform
+void gameDelay(int milliseconds)
+{
 #ifdef _WIN32
     Sleep(milliseconds);
 #else
@@ -26,57 +27,59 @@ void gameDelay(int milliseconds) {
 #endif
 }
 
-// ASCII art untuk dadu
-void drawDice(int value) {
+// ACII for dice
+void drawDice(int value)
+{
     cout << "\n";
-    switch(value) {
-        case 1:
-            cout << "┌─────────┐\n";
-            cout << "│         │\n";
-            cout << "│    ●    │\n";
-            cout << "│         │\n";
-            cout << "└─────────┘\n";
-            break;
-        case 2:
-            cout << "┌─────────┐\n";
-            cout << "│  ●      │\n";
-            cout << "│         │\n";
-            cout << "│      ●  │\n";
-            cout << "└─────────┘\n";
-            break;
-        case 3:
-            cout << "┌─────────┐\n";
-            cout << "│  ●      │\n";
-            cout << "│    ●    │\n";
-            cout << "│      ●  │\n";
-            cout << "└─────────┘\n";
-            break;
-        case 4:
-            cout << "┌─────────┐\n";
-            cout << "│  ●   ●  │\n";
-            cout << "│         │\n";
-            cout << "│  ●   ●  │\n";
-            cout << "└─────────┘\n";
-            break;
-        case 5:
-            cout << "┌─────────┐\n";
-            cout << "│  ●   ●  │\n";
-            cout << "│    ●    │\n";
-            cout << "│  ●   ●  │\n";
-            cout << "└─────────┘\n";
-            break;
-        case 6:
-            cout << "┌─────────┐\n";
-            cout << "│  ●   ●  │\n";
-            cout << "│  ●   ●  │\n";
-            cout << "│  ●   ●  │\n";
-            cout << "└─────────┘\n";
-            break;
+    switch (value)
+    {
+    case 1:
+        cout << "┌─────────┐\n";
+        cout << "│         │\n";
+        cout << "│    ●    │\n";
+        cout << "│         │\n";
+        cout << "└─────────┘\n";
+        break;
+    case 2:
+        cout << "┌─────────┐\n";
+        cout << "│  ●      │\n";
+        cout << "│         │\n";
+        cout << "│      ●  │\n";
+        cout << "└─────────┘\n";
+        break;
+    case 3:
+        cout << "┌─────────┐\n";
+        cout << "│  ●      │\n";
+        cout << "│    ●    │\n";
+        cout << "│      ●  │\n";
+        cout << "└─────────┘\n";
+        break;
+    case 4:
+        cout << "┌─────────┐\n";
+        cout << "│  ●   ●  │\n";
+        cout << "│         │\n";
+        cout << "│  ●   ●  │\n";
+        cout << "└─────────┘\n";
+        break;
+    case 5:
+        cout << "┌─────────┐\n";
+        cout << "│  ●   ●  │\n";
+        cout << "│    ●    │\n";
+        cout << "│  ●   ●  │\n";
+        cout << "└─────────┘\n";
+        break;
+    case 6:
+        cout << "┌─────────┐\n";
+        cout << "│  ●   ●  │\n";
+        cout << "│  ●   ●  │\n";
+        cout << "│  ●   ●  │\n";
+        cout << "└─────────┘\n";
+        break;
     }
     cout << "\n";
 }
 
-// Fungsi queue - implementasi yang sudah ada
+// create queue
 void createQueue()
 {
     turnQueue.front = 0;
@@ -84,16 +87,19 @@ void createQueue()
     turnQueue.top = 0;
 }
 
+// check if queue is empty or full
 bool isEmpty()
 {
     return turnQueue.top == 0;
 }
 
+// check if queue is empty or full
 bool isFull()
 {
     return turnQueue.top >= MAX_QUEUE;
 }
 
+// add value to queue
 void inQueue(int val)
 {
     if (isFull())
@@ -103,6 +109,7 @@ void inQueue(int val)
     turnQueue.top++;
 }
 
+// remove value from queue
 int deQueue()
 {
     if (isEmpty())
@@ -117,6 +124,7 @@ int deQueue()
     return val;
 }
 
+//
 void displayQueue()
 {
     if (isEmpty())
@@ -134,6 +142,7 @@ void displayQueue()
     }
 }
 
+// find value in queue
 int find(int val)
 {
     if (isEmpty())
@@ -147,32 +156,34 @@ int find(int val)
 }
 
 // Fungsi roll dadu dengan animasi
-int rollDiceAnimated() {
+int rollDiceAnimated()
+{
     cout << "\n🎲 Melempar dadu...\n";
-    
+
     // Animasi rolling (menampilkan angka acak beberapa kali)
-    for(int i = 0; i < 8; i++) {
+    for (int i = 0; i < 8; i++)
+    {
         int randomShow = rand() % 6 + 1;
-        
+
         // Clear previous line and show dice
         cout << "\r🎲 Rolling... " << randomShow << "  ";
         cout.flush();
-        
+
         gameDelay(200 + i * 50); // Delay bertambah untuk efek melambat
     }
-    
+
     // Hasil akhir
     int finalResult = rand() % 6 + 1;
     cout << "\r🎉 HASIL DADU! 🎉         \n";
     drawDice(finalResult);
     cout << "Nilai: " << finalResult << "\n";
-    
+
     gameDelay(1000); // Pause sebentar untuk melihat hasil
-    
+
     return finalResult;
 }
 
-// Update fungsi rollDice dengan animasi
+// update rolldice with animation
 int rollDice()
 {
     return rollDiceAnimated();
@@ -185,21 +196,21 @@ void determineTurnOrder()
     setcolor(12);
     cout << "\n=== MENENTUKAN GILIRAN AWAL ===\n";
     cout << "Setiap pemain akan melempar dadu!\n\n";
-    
+
     for (int i = 0; i < numPlayers; ++i)
     {
         cout << "🎯 Giliran " << players[i].name << "!\n";
         cout << "Tekan ENTER untuk melempar dadu...";
         cin.get();
-        
+
         int roll = rollDiceAnimated();
         cout << players[i].name << " mendapat: " << roll << "\n";
         cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
-        
+
         rolls.push_back({roll, i});
         gameDelay(500);
     }
-    
+
     sort(rolls.rbegin(), rolls.rend());
     for (auto &r : rolls)
     {
@@ -247,7 +258,7 @@ void playTurn()
         cout << ".";
         cout.flush();
         gameDelay(400);
-        
+
         for (auto &edge : graph[p.position])
         {
             if (edge.weight == 1)
@@ -261,7 +272,7 @@ void playTurn()
 
     cout << "📍 " << p.name << " sekarang di petak " << p.position << endl;
 
-    // Cek ular/tangga dengan animasi
+    // cek ular/tangga dengan animasi
     for (auto &edge : graph[p.position])
     {
         if (edge.weight != 1)
@@ -288,7 +299,7 @@ void playTurn()
         int minigameType = rand() % 2; // 0 = tebak angka, 1 = suit
 
         cout << "\n🎮 MINIGAME ZONE! 🎮\n";
-        
+
         if (minigameType == 0)
         {
             cout << "🎯 Minigame: Tebak Angka!\n";
@@ -334,7 +345,7 @@ void playTurn()
         cout << "📍 " << p.name << " sekarang di petak " << p.position << endl;
         // Delay supaya pemain bisa lihat hasil
         cout << "Tekan ENTER untuk lanjut ke pemain berikutnya...";
-        cin.get();    // tunggu ENTER
+        cin.get(); // tunggu ENTER
     }
 
     displayBoard();
