@@ -10,13 +10,14 @@
 
 
 #ifdef _WIN32
+#include <conio.h>
 #include <windows.h>
 #else
 #include <unistd.h>
 #endif
 
 using namespace std;
-
+bool gameEnded = false;
 Queue turnQueue;
 
 // fungsi untuk delay/sleep lintas platform
@@ -195,7 +196,7 @@ void determineTurnOrder()
 {
     createQueue();
     vector<pair<int, int>> rolls;
-    setcolor(12);
+    // setcolor(12);
     cout << "\n=== MENENTUKAN GILIRAN AWAL ===\n";
     cout << "Setiap pemain akan melempar dadu!\n\n";
 
@@ -252,6 +253,14 @@ void playTurn()
     int dice = rollDiceAnimated();
     cout << p.name << " bergerak " << dice << " langkah!\n";
 
+    if (p.position + dice > 50) {
+    cout << "⚠️ Langkah melebihi petak 50! Harus tepat 50 untuk menang.\n";
+    cout << "Giliran " << p.name << " ditunda ke ronde berikutnya.\n";
+    inQueue(currentPlayerIndex);
+    gameDelay(1000);
+    return;
+    }
+    
     // Animasi pergerakan
     cout << "🚶 Bergerak";
     int stepsLeft = dice;
@@ -330,7 +339,7 @@ void playTurn()
         }
         else
         {
-            cout << "😔 " << p.name << " kalah minigame! Mundur 3 petak.\n";
+            cout << "😔 " << p.name << " kalah minigame! Kamu tidak bergerak kemanapun.\n";
             for (int i = 0; i < 3; ++i)
             {
                 for (auto &edge : graph[p.position])
@@ -352,13 +361,53 @@ void playTurn()
 
     displayBoard();
 
-    if (p.position >= 50)
-    {
-        cout << "\n🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊\n";
-        cout << "🏆 " << p.name << " MENANG! 🏆\n";
-        cout << "🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊\n";
-        exit(0);
+    // if (p.position >= 50)
+    // {
+    //     cout << "\n🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊\n";
+    //     cout << "🏆 " << p.name << " MENANG! 🏆\n";
+    //     cout << "🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊\n";
+    //     gameEnded = true;
+    //     return;
+
+        
+    // }
+
+
+if (p.position == 50)
+{
+    const string asciiWin[] = {
+    "  __  __ ______ _   _          _   _  _____ ",
+    " |  \\/  |  ____| \\ | |   /\\   | \\ | |/ ____|",
+    " | \\  / | |__  |  \\| |  /  \\  |  \\| | |  __ ",
+    " | |\\/| |  __| | . ` | / /\\ \\ | . ` | | |_ |",
+    " | |  | | |____| |\\  |/ ____ \\| |\\  | |__| |",
+    " |_|  |_|______|_| \\_/_/    \\_\\_| \\_|\\_____|",
+    "                                            ",
+    "                                            "
+};
+
+
+    const string blankLine = "                                             ";
+    const int blinkDelay = 200;
+    const int padding = 10;
+
+    while (!_kbhit()) {
+        system("cls");
+        cout << string(padding, '\n');
+        for (size_t i = 0; i < sizeof(asciiWin) / sizeof(asciiWin[0]); ++i)
+            cout << string(padding, ' ') << asciiWin[i] << endl;
+        Sleep(blinkDelay);
+
+        system("cls");
+        cout << string(padding, '\n');
+        for (size_t i = 0; i < sizeof(asciiWin) / sizeof(asciiWin[0]); ++i)
+            cout << string(padding, ' ') << blankLine << endl;
+        Sleep(blinkDelay);
     }
+
+    gameEnded = true;
+    return;
+}
 
     inQueue(currentPlayerIndex);
 }
