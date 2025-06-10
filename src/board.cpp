@@ -33,6 +33,7 @@ void initializePlayers()
     for (int i = 0; i < numPlayers; ++i)
     {
         players[i].position = 1;
+        players[i].pathHistory.push_back(1);
     }
 }
 

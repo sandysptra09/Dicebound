@@ -372,7 +372,9 @@ void playTurn()
         
     // }
 
-
+    // Store value posisi 
+    p.pathHistory.push_back(p.position);
+     
 if (p.position == 50)
 {
     const string asciiWin[] = {
@@ -385,8 +387,6 @@ if (p.position == 50)
     "                                            ",
     "                                            "
 };
-
-
     const string blankLine = "                                             ";
     const int blinkDelay = 200;
     const int padding = 10;
@@ -394,16 +394,28 @@ if (p.position == 50)
     while (!_kbhit()) {
         system("cls");
         cout << string(padding, '\n');
-        for (size_t i = 0; i < sizeof(asciiWin) / sizeof(asciiWin[0]); ++i)
+        for (size_t i = 0; i < sizeof(asciiWin) / sizeof(asciiWin[0]); ++i){ 
             cout << string(padding, ' ') << asciiWin[i] << endl;
+        }
         Sleep(blinkDelay);
 
         system("cls");
         cout << string(padding, '\n');
-        for (size_t i = 0; i < sizeof(asciiWin) / sizeof(asciiWin[0]); ++i)
+        for (size_t i = 0; i < sizeof(asciiWin) / sizeof(asciiWin[0]); ++i){
             cout << string(padding, ' ') << blankLine << endl;
+            cout << string(padding, ' ') << asciiWin[i] << endl;
+        }
         Sleep(blinkDelay);
     }
+    cout << "\n\n🎉 " << p.name << " menang permainan!\n";
+    cout << "📍 Jejak perjalanan: ";
+
+    for (int i = 0; i < p.pathHistory.size(); ++i) {
+        cout << p.pathHistory[i];
+        if (i < p.pathHistory.size() - 1)
+            cout << " → ";
+    }
+    cout << "\nTotal langkah: " << p.pathHistory.size() - 1 << "\n";  
 
     gameEnded = true;
     return;
