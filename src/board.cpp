@@ -5,7 +5,7 @@
 
 using namespace std;
 
-std::vector<Edge> graph[NUM_VERTICES + 1];
+vector<Edge> graph[NUM_VERTICES + 1];
 Player players[MAX_PLAYERS];
 int numPlayers = 0;
 
@@ -33,6 +33,7 @@ void initializePlayers()
     for (int i = 0; i < numPlayers; ++i)
     {
         players[i].position = 1;
+        players[i].pathHistory.push_back(1);
     }
 }
 
