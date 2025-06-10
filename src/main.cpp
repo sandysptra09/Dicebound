@@ -120,10 +120,10 @@ void showRulesAndTips()
     cout << "   - 🐍 Kena ular? Kamu akan turun!\n";
     cout << "   - 🪜 Kena tangga? Kamu naik lebih cepat!\n\n";
 
-    cout << "👥 Pemain pertama ditentukan secara acak.\n";
+    cout << "👥 Pemain pertama ditentukan berdasarkan hasil roll dadu tertinggi.\n";
     cout << "🎉 Selamat bermain dan semoga beruntung!\n";
 
-    cout << "\nTekan ENTER untuk melanjutkan...";
+    cout << "\n";
     cin.ignore();
 }
 
@@ -163,45 +163,23 @@ int main()
             else
             {
 #ifdef _WIN32
-                SetConsoleTextAttribute(hConsole, 12);
+                SetConsoleTextAttribute(hConsole, 7);
 #endif
                 cout << "❗ Input tidak valid. Masukkan angka 1 atau 2.\n\n";
                 cin.clear();
                 cin.ignore(1000, '\n');
             }
         }
-
+        SetConsoleTextAttribute(hConsole, 10);
         if (choice == 1)
         {
-            char lihatRules;
-            while (true)
-            {
+            cout << "\nMenampilkan peraturan & tips...\n";
 #ifdef _WIN32
-                SetConsoleTextAttribute(hConsole, 10);
+            Sleep(1000);
+#else
+            usleep(1000000);
 #endif
-                cout << "\nMau lihat peraturan & tips dulu? (y/n): ";
-#ifdef _WIN32
-                SetConsoleTextAttribute(hConsole, 7);
-#endif
-                if (cin >> lihatRules)
-                {
-                    lihatRules = tolower(lihatRules);
-                    if (lihatRules == 'y' || lihatRules == 'n')
-                        break;
-                }
-#ifdef _WIN32
-                SetConsoleTextAttribute(hConsole, 12);
-#endif
-                cout << "❗ Masukkan hanya 'y' atau 'n'.\n";
-                cin.clear();
-                cin.ignore(1000, '\n');
-            }
-
-            cin.ignore();
-            if (lihatRules == 'y')
-            {
-                showRulesAndTips();
-            }
+            showRulesAndTips();
 
             bool mainLagi = true;
             while (mainLagi)
