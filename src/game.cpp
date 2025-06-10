@@ -8,7 +8,6 @@
 #include "suit.h"
 #include "blackjack.h"
 
-
 #ifdef _WIN32
 #include <conio.h>
 #include <windows.h>
@@ -253,14 +252,15 @@ void playTurn()
     int dice = rollDiceAnimated();
     cout << p.name << " bergerak " << dice << " langkah!\n";
 
-    if (p.position + dice > 50) {
-    cout << "⚠️ Langkah melebihi petak 50! Harus tepat 50 untuk menang.\n";
-    cout << "Giliran " << p.name << " ditunda ke ronde berikutnya.\n";
-    inQueue(currentPlayerIndex);
-    gameDelay(1000);
-    return;
+    if (p.position + dice > 50)
+    {
+        cout << "⚠️ Langkah melebihi petak 50! Harus tepat 50 untuk menang.\n";
+        cout << "Giliran " << p.name << " ditunda ke ronde berikutnya.\n";
+        inQueue(currentPlayerIndex);
+        gameDelay(1000);
+        return;
     }
-    
+
     // Animasi pergerakan
     cout << "🚶 Bergerak";
     int stepsLeft = dice;
@@ -369,45 +369,42 @@ void playTurn()
     //     gameEnded = true;
     //     return;
 
-        
     // }
 
+    if (p.position == 50)
+    {
+        const string asciiWin[] = {
+            "  __  __ ______ _   _          _   _  _____ ",
+            " |  \\/  |  ____| \\ | |   /\\   | \\ | |/ ____|",
+            " | \\  / | |__  |  \\| |  /  \\  |  \\| | |  __ ",
+            " | |\\/| |  __| | . ` | / /\\ \\ | . ` | | |_ |",
+            " | |  | | |____| |\\  |/ ____ \\| |\\  | |__| |",
+            " |_|  |_|______|_| \\_/_/    \\_\\_| \\_|\\_____|",
+            "                                            ",
+            "                                            "};
 
-if (p.position == 50)
-{
-    const string asciiWin[] = {
-    "  __  __ ______ _   _          _   _  _____ ",
-    " |  \\/  |  ____| \\ | |   /\\   | \\ | |/ ____|",
-    " | \\  / | |__  |  \\| |  /  \\  |  \\| | |  __ ",
-    " | |\\/| |  __| | . ` | / /\\ \\ | . ` | | |_ |",
-    " | |  | | |____| |\\  |/ ____ \\| |\\  | |__| |",
-    " |_|  |_|______|_| \\_/_/    \\_\\_| \\_|\\_____|",
-    "                                            ",
-    "                                            "
-};
+        const string blankLine = "                                             ";
+        const int blinkDelay = 200;
+        const int padding = 10;
 
+        while (!_kbhit())
+        {
+            system("cls");
+            cout << string(padding, '\n');
+            for (size_t i = 0; i < sizeof(asciiWin) / sizeof(asciiWin[0]); ++i)
+                cout << string(padding, ' ') << asciiWin[i] << endl;
+            Sleep(blinkDelay);
 
-    const string blankLine = "                                             ";
-    const int blinkDelay = 200;
-    const int padding = 10;
+            system("cls");
+            cout << string(padding, '\n');
+            for (size_t i = 0; i < sizeof(asciiWin) / sizeof(asciiWin[0]); ++i)
+                cout << string(padding, ' ') << blankLine << endl;
+            Sleep(blinkDelay);
+        }
 
-    while (!_kbhit()) {
-        system("cls");
-        cout << string(padding, '\n');
-        for (size_t i = 0; i < sizeof(asciiWin) / sizeof(asciiWin[0]); ++i)
-            cout << string(padding, ' ') << asciiWin[i] << endl;
-        Sleep(blinkDelay);
-
-        system("cls");
-        cout << string(padding, '\n');
-        for (size_t i = 0; i < sizeof(asciiWin) / sizeof(asciiWin[0]); ++i)
-            cout << string(padding, ' ') << blankLine << endl;
-        Sleep(blinkDelay);
+        gameEnded = true;
+        return;
     }
-
-    gameEnded = true;
-    return;
-}
 
     inQueue(currentPlayerIndex);
 }
