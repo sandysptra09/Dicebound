@@ -105,24 +105,24 @@ void Skor() {
 }
 
 
-bool playSuit(std::string playerName) {
+bool playSuit(string playerName) {
     system("cls");
-    std::cout << playerName << " bermain Suit Game melawan komputer!\n";
+    cout << playerName << " bermain Suit Game melawan komputer!\n";
 
     acak();  // set nilai random untuk komputer
 
-    std::string pilih;
+    string pilih;
     int user;
 
-    std::cout << "1. BATU\n";
-    std::cout << "2. GUNTING\n";
-    std::cout << "3. KERTAS\n";
-    std::cout << "Pilih: ";
-    std::cin >> pilih;
-    std::cout << "\n";
+    cout << "1. BATU\n";
+    cout << "2. GUNTING\n";
+    cout << "3. KERTAS\n";
+    cout << "Pilih: ";
+    cin >> pilih;
+    cout << "\n";
 
     int computer = setAngka;
-    std::stringstream ss;
+    stringstream ss;
     ss << pilih;
     ss >> user;
 
@@ -130,15 +130,15 @@ bool playSuit(std::string playerName) {
 
     gotoxy(0, 15);
     if (computer == user) {
-        std::cout << "                SERI\n";
+        cout << "                SERI\n";
         return false;  // Seri, tidak menang
     } else if ((computer == 1 && user == 3) ||
                (computer == 2 && user == 1) ||
                (computer == 3 && user == 2)) {
-        std::cout << "              KAMU MENANG\n";
+        cout << "              KAMU MENANG\n";
         return true;  // Menang
     } else {
-        std::cout << "            KOMPUTER MENANG\n";
+        cout << "            KOMPUTER MENANG\n";
         return false;  // Kalah
     }
 }

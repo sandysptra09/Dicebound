@@ -5,12 +5,14 @@
 #include <ctime>
 #include <iomanip>
 
-std::vector<Card> playerHand;
-std::vector<Card> dealerHand;
-std::vector<Card> deck;
+using namespace std;
 
-const std::vector<std::string> suits = {"♠", "♥", "♦", "♣"};
-const std::vector<std::string> ranks = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
+vector<Card> playerHand;
+vector<Card> dealerHand;
+vector<Card> deck;
+
+const vector<string> suits = {"♠", "♥", "♦", "♣"};
+const vector<string> ranks = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
 
 void initializeDeck()
 {
@@ -26,8 +28,8 @@ void initializeDeck()
 
 void shuffleDeck()
 {
-    std::srand(unsigned(std::time(nullptr)));
-    std::shuffle(deck.begin(), deck.end(), std::default_random_engine(std::rand()));
+    srand(unsigned(time(nullptr)));
+    shuffle(deck.begin(), deck.end(), default_random_engine(rand()));
 }
 
 Card drawCard()
@@ -37,7 +39,7 @@ Card drawCard()
     return card;
 }
 
-int calculateHandValue(const std::vector<Card> &hand)
+int calculateHandValue(const vector<Card> &hand)
 {
     int value = 0;
     int aceCount = 0;
@@ -54,7 +56,7 @@ int calculateHandValue(const std::vector<Card> &hand)
         }
         else
         {
-            value += std::stoi(card.rank);
+            value += stoi(card.rank);
         }
     }
     while (value > 21 && aceCount > 0)
@@ -65,97 +67,97 @@ int calculateHandValue(const std::vector<Card> &hand)
     return value;
 }
 
-void printHand(const std::vector<Card> &hand, bool hideFirstCard)
+void printHand(const vector<Card> &hand, bool hideFirstCard)
 {
     for (size_t i = 0; i < hand.size(); ++i)
     {
         if (i == 0 && hideFirstCard)
         {
-            std::cout << "┌───────┐ ";
+            cout << "┌───────┐ ";
         }
         else
         {
-            std::cout << "┌───────┐ ";
+            cout << "┌───────┐ ";
         }
     }
-    std::cout << '\n';
+    cout << '\n';
 
     for (size_t i = 0; i < hand.size(); ++i)
     {
         if (i == 0 && hideFirstCard)
         {
-            std::cout << "|*******| ";
+            cout << "|*******| ";
         }
         else
         {
-            std::cout << "|" << std::left << std::setw(2) << hand[i].rank << "     | ";
+            cout << "|" << left << setw(2) << hand[i].rank << "     | ";
         }
     }
-    std::cout << '\n';
+    cout << '\n';
 
     for (size_t i = 0; i < hand.size(); ++i)
     {
-        std::cout << "|       | ";
+        cout << "|       | ";
     }
-    std::cout << '\n';
+    cout << '\n';
 
     for (size_t i = 0; i < hand.size(); ++i)
     {
         if (i == 0 && hideFirstCard)
         {
-            std::cout << "|*******| ";
+            cout << "|*******| ";
         }
         else
         {
-            std::cout << "|   " << hand[i].suit << "   | ";
+            cout << "|   " << hand[i].suit << "   | ";
         }
     }
-    std::cout << '\n';
+    cout << '\n';
 
     for (size_t i = 0; i < hand.size(); ++i)
     {
-        std::cout << "|       | ";
+        cout << "|       | ";
     }
-    std::cout << '\n';
+    cout << '\n';
 
     for (size_t i = 0; i < hand.size(); ++i)
     {
         if (i == 0 && hideFirstCard)
         {
-            std::cout << "|*******| ";
+            cout << "|*******| ";
         }
         else
         {
-            std::cout << "|     " << std::right << std::setw(2) << hand[i].rank << "| ";
+            cout << "|     " << right << setw(2) << hand[i].rank << "| ";
         }
     }
-    std::cout << '\n';
+    cout << '\n';
 
     for (size_t i = 0; i < hand.size(); ++i)
     {
-        std::cout << "└───────┘ ";
+        cout << "└───────┘ ";
     }
-    std::cout << '\n';
+    cout << '\n';
 }
 
 void playerTurn()
 {
     while (true)
     {
-        std::cout << "Your cards:\n";
+        cout << "Your cards:\n";
         printHand(playerHand);
         int total = calculateHandValue(playerHand);
-        std::cout << "Total: " << total << "\n";
+        cout << "Total: " << total << "\n";
 
         if (total > 21)
         {
-            std::cout << "You busted!\n";
+            cout << "You busted!\n";
             return;
         }
 
-        std::cout << "[1] Hit  [2] Stand\n> ";
+        cout << "[1] Hit  [2] Stand\n> ";
         int choice;
-        std::cin >> choice;
+        cin >> choice;
 
         if (choice == 1)
         {
@@ -170,17 +172,17 @@ void playerTurn()
 
 void dealerTurn()
 {
-    std::cout << "\nDealer's turn...\n";
+    cout << "\nDealer's turn...\n";
     while (calculateHandValue(dealerHand) < 17)
     {
         dealerHand.push_back(drawCard());
     }
-    std::cout << "Dealer's cards:\n";
+    cout << "Dealer's cards:\n";
     printHand(dealerHand);
-    std::cout << "Total: " << calculateHandValue(dealerHand) << "\n";
+    cout << "Total: " << calculateHandValue(dealerHand) << "\n";
 }
 
-bool playBlackjack(const std::string &playerName)
+bool playBlackjack(const string &playerName)
 {
     playerHand.clear();
     dealerHand.clear();
@@ -193,7 +195,7 @@ bool playBlackjack(const std::string &playerName)
     playerHand.push_back(drawCard());
     dealerHand.push_back(drawCard());
 
-    std::cout << "Dealer shows:\n";
+    cout << "Dealer shows:\n";
     printHand(dealerHand, true);
 
     playerTurn();
@@ -208,27 +210,27 @@ bool playBlackjack(const std::string &playerName)
 
     if (playerTotal > 21)
     {
-        std::cout << "\nYou busted. Dealer wins!\n";
+        cout << "\nYou busted. Dealer wins!\n";
         return false;
     }
     else if (dealerTotal > 21)
     {
-        std::cout << "\nDealer busted. You win!\n";
+        cout << "\nDealer busted. You win!\n";
         return true;
     }
     else if (playerTotal > dealerTotal)
     {
-        std::cout << "\nYou win!\n";
+        cout << "\nYou win!\n";
         return true;
     }
     else if (playerTotal < dealerTotal)
     {
-        std::cout << "\nDealer wins!\n";
+        cout << "\nDealer wins!\n";
         return false;
     }
     else
     {
-        std::cout << "\nIt's a tie!\n";
+        cout << "\nIt's a tie!\n";
         return false; // misalnya tie dianggap kalah
     }
 }
