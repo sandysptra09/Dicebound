@@ -168,8 +168,8 @@ int main()
 #ifdef _WIN32
         SetConsoleTextAttribute(hConsole, 11);
 #endif
-        cout << "║ 1. ▶️  Play                     ║\n";
-        cout << "║ 2. ❌ Exit                     ║\n";
+        cout << "║ 1. ▶️  Main                     ║\n";
+        cout << "║ 2. ❌ Keluar                   ║\n";
         cout << "╚════════════════════════════════╝\n";
 
 #ifdef _WIN32
