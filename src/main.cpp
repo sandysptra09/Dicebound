@@ -121,7 +121,30 @@ void showRulesAndTips()
     cout << "   - 🪜 Kena tangga? Kamu naik lebih cepat!\n\n";
 
     cout << "👥 Pemain pertama ditentukan berdasarkan hasil roll dadu tertinggi.\n";
-    cout << "🎉 Selamat bermain dan semoga beruntung!\n";
+    cout << "🎉 Selamat bermain dan semoga beruntung!\n\n";
+
+    cout << "🎮 Minigames (Permainan Mini):\n";
+    cout << "   Selama permainan, kamu bisa menghadapi tantangan minigame berikut:\n\n";
+
+    cout << "   🃏 **Blackjack**:\n";
+    cout << "      - Pemain dan dealer (komputer) masing-masing mendapat kartu.\n";
+    cout << "      - Tujuanmu adalah mencapai total kartu sedekat mungkin ke 21.\n";
+    cout << "      - Tapi hati-hati, jika melebihi 21, kamu kalah otomatis (bust).\n";
+    cout << "      - Menang = maju 3 petak!\n";
+    cout << "      - Kalah = diam ditempat.\n\n";
+
+    cout << "   ✊✋✌️ **Suit (Batu-Gunting-Kertas)**:\n";
+    cout << "      - Pilih antara batu, gunting, atau kertas.\n";
+    cout << "      - Batu menang lawan gunting, gunting menang lawan kertas,\n";
+    cout << "        dan kertas menang lawan batu.\n";
+    cout << "      - Melawan komputer secara acak.\n";
+    cout << "      - Menang = lempar dadu tambahan!\n";
+    cout << "      - Seri = diam ditempat.\n";
+    cout << "      - Kalah = diam ditempat.\n";
+
+    cout << "\n📌 Tips:\n";
+    cout << "   - Gunakan minigame untuk membalikkan keadaan!\n";
+    cout << "   - Ambil risiko saat tepat, tapi jangan terlalu nekat 😏\n";
 
     cout << "\n";
     cin.ignore();
