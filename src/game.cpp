@@ -223,17 +223,6 @@ void determineTurnOrder()
     displayQueue();
 }
 
-bool playMinigame(int playerIndex)
-{
-    cout << players[playerIndex].name << " memasuki minigame tebak angka!\n";
-    cout << "Tebak angka antara 1 sampai 3 (input manual): ";
-    int correct = rand() % 3 + 1;
-    int guess;
-    cin >> guess;
-    cout << "Jawaban benar: " << correct << endl;
-    return guess == correct;
-}
-
 void playTurn()
 {
     int currentPlayerIndex = deQueue();
