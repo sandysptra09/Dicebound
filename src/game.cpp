@@ -19,7 +19,7 @@ using namespace std;
 bool gameEnded = false;
 Queue turnQueue;
 
-// fungsi untuk delay/sleep lintas platform
+// fungsi for delay/sleep cross-platform
 void gameDelay(int milliseconds)
 {
 #ifdef _WIN32
@@ -84,8 +84,13 @@ void drawDice(int value)
 // create queue
 void createQueue()
 {
+    // position of the first element (earliest entry)
     turnQueue.front = 0;
+
+    // the position of the last element (doesnt exist yet, so -1)
     turnQueue.rear = -1;
+
+    // number of elements in the queue (still empty)
     turnQueue.top = 0;
 }
 
@@ -108,6 +113,7 @@ void inQueue(int val)
         return;
     turnQueue.rear++;
     turnQueue.data[turnQueue.rear] = val;
+
     turnQueue.top++;
 }
 
