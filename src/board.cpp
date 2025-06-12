@@ -73,8 +73,9 @@ void displayBoard()
 
     int rows = 5;
     int cols = 10;
-    int cellWidth = 8;
+    int cellWidth = 10;
 
+    // helper function to print a border
     auto printBorder = [&]()
     {
         for (int i = 0; i < cols; i++)
@@ -86,7 +87,7 @@ void displayBoard()
         cout << "+\n";
     };
 
-    // print header row
+    // print top border
     for (int r = rows - 1; r >= 0; r--)
     {
         vector<int> cells(cols);
@@ -104,7 +105,7 @@ void displayBoard()
 
         printBorder();
 
-        // cell number row
+        // row cell numbers
         for (int c = 0; c < cols; c++)
         {
             cout << "|";
@@ -113,43 +114,39 @@ void displayBoard()
         }
         cout << "|\n";
 
-        // snake/ladder indicators
+        // check for ladders, snakes, and minigames
         for (int c = 0; c < cols; c++)
         {
             cout << "|";
-            string indicator = " ";
-
-            // check for ladder, snake, or minigame in the cell
+            string emoji = " ";
             if (hasLadder(cells[c]))
-                indicator = "L";
+                emoji = "🪜";
             else if (hasSnake(cells[c]))
-                indicator = "S";
+                emoji = "🐍";
             else if (hasMinigame(cells[c]))
-                indicator = "M";
-
+                emoji = "🎮";
             cout.width(cellWidth);
-            cout << left << indicator;
+            cout << left << emoji;
         }
         cout << "|\n";
 
-        // player row in each cell
+        // row player positions
         for (int c = 0; c < cols; c++)
         {
             cout << "|";
-            string playerMark = " ";
+            string mark = "";
             for (int i = 0; i < numPlayers; i++)
             {
                 if (players[i].position == cells[c])
                 {
-                    string symbol = string(1, toupper(players[i].name[0])) + to_string(i + 1);
-                    if (playerMark == " ")
-                        playerMark = symbol;
-                    else
-                        playerMark += "," + symbol;
+                    string symbol = "👤" + string(1, toupper(players[i].name[0])) + to_string(i + 1);
+                    if (!mark.empty())
+                        mark += ",";
+                    mark += symbol;
                 }
             }
             cout.width(cellWidth);
-            cout << left << playerMark;
+            cout << left << mark;
         }
         cout << "|\n";
     }
@@ -157,5 +154,5 @@ void displayBoard()
     printBorder();
 
     cout << "\nLegend:\n";
-    cout << "L = Ladder (naik)   S = Snake (turun)  M = Minigame\n";
+    cout << "🪜 = Ladder (naik)   🐍 = Snake (turun)  🎮 = Minigame\n";
 }
