@@ -215,7 +215,6 @@ int rollDiceAnimated()
     return finalResult;
 }
 
-
 // update rolldice with animation
 int rollDice()
 {
@@ -269,21 +268,45 @@ void playTurn()
     cout << "Tekan ENTER untuk melempar dadu...";
     cin.get();
 
-    int dice = rollDiceAnimated();
-    cout << p.name << " bergerak " << dice << " langkah!\n";
+    int totalSteps = 0;
+    int diceCount = 0;
 
-    if (p.position + dice > 50)
+    do
     {
-        cout << "⚠️ Langkah melebihi petak 50! Harus tepat 50 untuk menang.\n";
-        cout << "Giliran " << p.name << " ditunda ke ronde berikutnya.\n";
-        inQueue(currentPlayerIndex);
-        gameDelay(1000);
-        return;
-    }
+        int dice = rollDiceAnimated();
+        diceCount++;
+        cout << p.name << " melempar dadu ke-" << diceCount << ": " << dice << endl;
 
-    // Animasi pergerakan
+        if (p.position + totalSteps + dice > 50)
+        {
+            cout << "⚠️ Langkah melebihi petak 50! Harus tepat 50 untuk menang.\n";
+            cout << "Giliran " << p.name << " ditunda ke ronde berikutnya.\n";
+            inQueue(currentPlayerIndex);
+            gameDelay(1000);
+            return;
+        }
+
+        // check if player has rolled 3 times
+        totalSteps += dice;
+
+        // check if player rolled a 6 and has not rolled 3 times
+        if (dice == 6 && diceCount < 3)
+        {
+            cout << "🎲 Dapat 6! " << p.name << " boleh lempar lagi!\n";
+            cout << "Tekan ENTER untuk melempar ulang...";
+            cin.get();
+        }
+        else
+        {
+            break;
+        }
+    } while (diceCount < 3);
+
+    cout << p.name << " bergerak total " << totalSteps << " langkah!\n";
+
+    // animate movement
     cout << "🚶 Bergerak";
-    int stepsLeft = dice;
+    int stepsLeft = totalSteps;
     while (stepsLeft-- > 0)
     {
         cout << ".";
@@ -303,7 +326,7 @@ void playTurn()
 
     cout << "📍 " << p.name << " sekarang di petak " << p.position << endl;
 
-    // cek ular/tangga dengan animasi
+    // check for snakes or ladders with animation
     for (auto &edge : graph[p.position])
     {
         if (edge.weight != 1)
@@ -323,11 +346,11 @@ void playTurn()
         }
     }
 
-    // Minigame logic yang sudah ada (dengan 2 jenis minigame)
+    // minigames
     if (p.position % 5 == 0 && p.position < 50)
     {
         bool win;
-        int minigameType = rand() % 2; // 0 = tebak angka, 1 = suit
+        int minigameType = rand() % 2;
 
         cout << "\n🎮 MINIGAME ZONE! 🎮\n";
 
@@ -374,26 +397,16 @@ void playTurn()
         }
 
         cout << "📍 " << p.name << " sekarang di petak " << p.position << endl;
-        // Delay supaya pemain bisa lihat hasil
         cout << "Tekan ENTER untuk lanjut ke pemain berikutnya...";
-        cin.get(); // tunggu ENTER
+        cin.get();
     }
 
     displayBoard();
 
-    // if (p.position >= 50)
-    // {
-    //     cout << "\n🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊\n";
-    //     cout << "🏆 " << p.name << " MENANG! 🏆\n";
-    //     cout << "🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊🎊\n";
-    //     gameEnded = true;
-    //     return;
-
-    // }
-
-    // Store value posisi
+    // Store posisi saat ini
     p.pathHistory.push_back(p.position);
 
+    // Cek kemenangan
     if (p.position == 50)
     {
         const string asciiWin[] = {
@@ -413,32 +426,26 @@ void playTurn()
         {
             system("cls");
             cout << string(padding, '\n');
-            for (size_t i = 0; i < sizeof(asciiWin) / sizeof(asciiWin[0]); ++i)
-            {
-                cout << string(padding, ' ') << asciiWin[i] << endl;
-            }
+            for (const auto &line : asciiWin)
+                cout << string(padding, ' ') << line << endl;
             Sleep(blinkDelay);
 
             system("cls");
             cout << string(padding, '\n');
-            for (size_t i = 0; i < sizeof(asciiWin) / sizeof(asciiWin[0]); ++i)
-            {
+            for (const auto &line : asciiWin)
                 cout << string(padding, ' ') << blankLine << endl;
-                cout << string(padding, ' ') << asciiWin[i] << endl;
-            }
             Sleep(blinkDelay);
         }
+
         cout << "\n\n🎉 " << p.name << " menang permainan!\n";
         cout << "📍 Jejak perjalanan: ";
-
-        for (int i = 0; i < p.pathHistory.size(); ++i)
+        for (size_t i = 0; i < p.pathHistory.size(); ++i)
         {
             cout << p.pathHistory[i];
             if (i < p.pathHistory.size() - 1)
                 cout << " → ";
         }
         cout << "\nTotal langkah: " << p.pathHistory.size() - 1 << "\n";
-
         gameEnded = true;
         return;
     }
