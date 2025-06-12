@@ -18,6 +18,7 @@ using namespace std;
 
 extern bool gameEnded;
 
+// display welcome message and main menu
 void ShowMainMenu()
 {
 #ifdef _WIN32
@@ -95,6 +96,7 @@ void ShowMainMenu()
     system("cls");
 }
 
+// display rules and tips
 void showRulesAndTips()
 {
 #ifdef _WIN32
@@ -150,6 +152,7 @@ void showRulesAndTips()
     cin.ignore();
 }
 
+// main function
 int main()
 {
     ShowMainMenu();
@@ -226,7 +229,10 @@ int main()
 
                 cin.ignore();
 
+                // input player names
                 inputPlayers();
+
+                // initialize graph board and players
                 initializeGraph();
                 initializePlayers();
                 determineTurnOrder();
