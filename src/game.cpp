@@ -157,21 +157,45 @@ int find(int val)
     return -1;
 }
 
-// Fungsi roll dadu dengan animasi
+// // Fungsi roll dadu dengan animasi
+// int rollDiceAnimated()
+// {
+//     cout << "\n🎲 Melempar dadu...\n";
+
+//     // Animasi rolling (menampilkan angka acak beberapa kali)
+//     for (int i = 0; i < 8; i++)
+//     {
+//         int randomShow = rand() % 6 + 1;
+
+//         // Clear previous line and show dice
+//         cout << "\r🎲 Rolling... " << randomShow << "  ";
+//         cout.flush();
+
+//         gameDelay(200 + i * 50); // Delay bertambah untuk efek melambat
+//     }
+
+//     // Hasil akhir
+//     int finalResult = rand() % 6 + 1;
+//     cout << "\r🎉 HASIL DADU! 🎉         \n";
+//     drawDice(finalResult);
+//     cout << "Nilai: " << finalResult << "\n";
+
+//     gameDelay(1000); // Pause sebentar untuk melihat hasil
+
+//     return finalResult;
+// }
+
 int rollDiceAnimated()
 {
     cout << "\n🎲 Melempar dadu...\n";
 
-    // Animasi rolling (menampilkan angka acak beberapa kali)
-    for (int i = 0; i < 8; i++)
+    // Animasi rolling (cepat dan halus)
+    for (int i = 0; i < 6; i++)
     {
         int randomShow = rand() % 6 + 1;
-
-        // Clear previous line and show dice
         cout << "\r🎲 Rolling... " << randomShow << "  ";
         cout.flush();
-
-        gameDelay(200 + i * 50); // Delay bertambah untuk efek melambat
+        gameDelay(100); // lebih cepat
     }
 
     // Hasil akhir
@@ -180,10 +204,11 @@ int rollDiceAnimated()
     drawDice(finalResult);
     cout << "Nilai: " << finalResult << "\n";
 
-    gameDelay(1000); // Pause sebentar untuk melihat hasil
+    gameDelay(500); // Lebih singkat jeda
 
     return finalResult;
 }
+
 
 // update rolldice with animation
 int rollDice()
